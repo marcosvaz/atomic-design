@@ -1,0 +1,7 @@
+{
+  "name": "architecture",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
