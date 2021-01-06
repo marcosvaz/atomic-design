@@ -19,7 +19,7 @@ const Container = styled.div`
 
 export interface I{{ input | pascal }}Props {}
 
-export const {{ input | pascal }} : React.FC<I{{ input | pascal }}Props> = ():JSX.Element => {
+export const {{ input | pascal }}: React.FC<I{{ input | pascal }}Props> = (): JSX.Element => {
 
 
   return (
