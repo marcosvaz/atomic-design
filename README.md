@@ -14,7 +14,7 @@ O projeto está baseado na arquitetura Atomic Design, que é baseado na estrutur
 
 #### Vamos tomar os seguintes exemplos:
 
-Pode-se dizer que um botão é um dos menores componentes que você terá no seu projeto, e um dos mais reutilizados, ou seja, o melhor a se fazer, é componentizar ele da forma mais genérica o possível que supra a necessidade do projeto a ser desenvolvido.
+Pode-se dizer que um botão é um dos menores componentes que você terá no seu projeto, e um dos mais reutilizados, ou seja, o melhor a se fazer, é componentizar ele da forma mais genérica o possível e que supra a necessidade do projeto a ser desenvolvido.
 
 Basicamente ele se parece assim:
 
@@ -24,12 +24,12 @@ E sua estrutura em código seria:
 ```tsx
 export const Button = ({
   children = "Label",
+  onClick = () => void,
   ...rest
 }) => {
   return (
-    <Container {...rest}>
+    <Container onClick={onClick} {...rest}>
       {children}
-      {rest.icon && <img src={rest.icon} />}
     </Container>
   )
 }
@@ -57,7 +57,7 @@ export const ListItem = ({
 }
 ```
 
-Em seguida temos uma lista que renderiza esses itens, no caso, a soma de diversas ```moléculas``` resulta em um ```organismo```, pode-se parecer que temos apenas uma ```molécula```, mas isso vai depender de quantos itens iremos renderizar, ou seja, se renderizarmos 2 ou mais, já acaba sendo um ```organismo```, de certa forma, e podemos levar em conta também, que criando esse ```organismo```, vamos conseguir reutilizar o map, e não será preciso realizar novamente a função, em outro componente, para criar uma lista de itens:
+Em seguida temos uma lista que renderiza esses itens, no caso, a soma de diversas ```moléculas``` resulta em um ```organismo```, pode-se parecer que temos apenas uma ```molécula```, mas isso vai depender de quantos itens iremos renderizar, ou seja, se renderizarmos 2 ou mais, já acaba sendo um ```organismo``` de certa forma, e podemos levar em conta também que, criando esse ```organismo```, vamos conseguir reutilizar o map, e não será preciso realizar novamente a função, em outro componente, para criar uma lista de itens:
 
 ![Organism](https://i.ibb.co/StPkNDf/organism.png)
 
@@ -116,7 +116,8 @@ export const Dashboard = () => {
       const response = await getItemsFromService();
       setItems(response);
     } catch (e) {
-      // show error message
+      // sua mensagem de erro
+      throw Error(`Erro no retorno do serviço getItemsFromService [${e}]`)
     } finally {
       setIsLoading(false);
     }
@@ -137,7 +138,7 @@ export const Dashboard = () => {
 ```
 
 ## Documentação
-Para documentar o projeto, está sendo utilizado o [Storybook](https://storybook.js.org/), onde, ao criar cada componente utilizando-se do [Scaffdog](https://github.com/cats-oss/scaffdog), já é gerado um arquivo ```[nome-do-componente].stories.tsx``` que é a documentação referente ao mesmo.
+Para documentar o projeto, está sendo utilizado o [Storybook](https://storybook.js.org/), onde, ao criar cada componente utilizando-se do [Scaffdog](https://github.com/cats-oss/scaffdog), é gerado um arquivo ```[nome-do-componente].stories.tsx``` que é a documentação referente ao mesmo.
 
 Vamos seguir um exemplo desse projeto:
 
@@ -165,24 +166,28 @@ export const Default = Template.bind({})
 Default.args = {}
 ```
 
-Com isso podemos ver que as propriedades do componente são definidas pelo ```IButtonProps``` que vem do arquivo ```index.tsx```, ou seja, ao definirmos lá, essas propriedades serão importadas para cá, e o próprio componente também, e esse arquivo cria a documentação que pode ser acessada com o comando ```yarn storybook``` e acessando a url ```http://localhost:6006```.
+Com isso podemos ver que as propriedades do componente são definidas pelo ```IButtonProps``` que vem do arquivo ```index.tsx```, ou seja, ao definirmos lá, essas propriedades serão importadas para cá, e o próprio componente também, e esse arquivo cria a documentação que pode ser acessada com o comando ```yarn storybook``` e acessando a url [http://localhost:6006](http://localhost:6006).
 
 ![](https://i.ibb.co/qrKQqMp/Captura-de-Tela-2021-01-19-a-s-22-02-10.png)
 
-Ao definir as propriedades, no componente, em ```IButtonProps``` através do [Typescript](https://www.typescriptlang.org/), essas propriedades são mostradas na documentação para que você possa testar variações das mesmas, como por exemplo, se definirmos que nosso botão vai ter a propriedade ```children``` e ela será uma ```string```:
+Ao definir as propriedades, no componente, em ```IButtonProps``` através do [Typescript](https://www.typescriptlang.org/), essas propriedades são mostradas na documentação para que você possa testar variações das mesmas, como por exemplo, se definirmos que nosso botão vai ter a propriedade ```children``` e ela será uma ```string```, e uma propriedade ```onClick``` que será uma função sem retorno (```() => void```):
 ```tsx
 [...]
 
-// interface do Typescript) com a propriedade 'children' definida como uma 'string'
+// interface do Typescript com a propriedade 'children' definida como uma 'string'
+// e com a propriedade 'onClick' definida como uma função sem retorno '() => void'
 export interface IButtonProps {
   children: string
+  onClick: () => void
 }
 
 export const Button: React.FC<IButtonProps> = ({
   children,
+  onClick,
+  ...rest,
 }): JSX.Element => {
   return (
-    <Container>
+    <Container onClick={onClick} {...rest}>
       {children}
     </Container>
   )
@@ -190,7 +195,7 @@ export const Button: React.FC<IButtonProps> = ({
 ```
 > Utilizaremos o [Typescript](https://www.typescriptlang.org/) para realizar essa definição de tipos para as propriedades, como por exemplo, uma propriedade ser uma ```string```, um ```boolean```, um ```number```, uma função sem retorno ```() => void```, ou outros tipos do [Typescript](https://www.typescriptlang.org/).
 >
-> Para uma maior referência sobre [Typescript, clique aqui](https://www.typescriptlang.org/docs/handbook/basic-types.html).
+> Para uma maior referência sobre os tipos básicos do Typescript, [clique aqui](https://www.typescriptlang.org/docs/handbook/basic-types.html).
 
 E definirmos no ```Button.stories.tsx``` os argumentos padrão:
 
@@ -203,6 +208,7 @@ const Template: Story<IButtonProps> = args => <Button {...args} />
 export const Default = Template.bind({})
 Default.args = {
   children: 'Entrar', // Aqui poderá ser qualquer valor no lugar de 'Entrar', o componente será criado apenas para documentação
+  onClick: () => alert('Botão entrar') // Aqui você pode utilizar qualquer função, o componente será criado apenas para documentação
 }
 ```
 
@@ -214,16 +220,19 @@ E para criar uma variante desse componente, na documentação do [Storybook](htt
 export const Default = Template.bind({})
 Default.args = {
   children: 'Padrão',
+  onClick: () => alert('Botão padrão')
 }
 
 export const Variante1 = Template.bind({})
 Variante2.args = {
   children: 'Variante 1',
+  onClick: () => alert('Botão Variante 1')
 }
 
 export const Variante2 = Template.bind({})
 Variante2.args = {
   children: 'Variante 2',
+  onClick: () => alert('Botão Variante 2')
 }
 
 [...]
