@@ -9,24 +9,17 @@ ignore: []
 
 # `{{ input | pascal }}/index.tsx`
 
-```jsx
+```tsx
 import React from 'react'
-import styled from 'styled-components'
-
-const Container = styled.div`
-  padding: 10px;
-`
+import { Container } from './styles'
 
 export interface I{{ input | pascal }}Props {}
 
 export const {{ input | pascal }}: React.FC<I{{ input | pascal }}Props> = (): JSX.Element => {
 
-
   return (
-    <Container>
-
-    </Container>
-    )
+    <Container />
+  )
 }
 
 ```
@@ -51,5 +44,15 @@ Default.args = {
   
 }
 
+```
+
+# `{{ input | pascal }}/styles.ts`
+
+```ts
+import styled from 'styled-components'
+
+export const Container = styled.div`
+  padding: 10px;
+`
 
 ```

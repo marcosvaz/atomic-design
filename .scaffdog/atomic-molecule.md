@@ -9,31 +9,24 @@ ignore: []
 
 # `{{ input | pascal }}/index.tsx`
 
-```jsx
+```tsx
 import React from 'react'
-import styled from 'styled-components'
-
-const Container = styled.div`
-  padding: 10px;
-`
+import { Container } from './styles'
 
 export interface I{{ input | pascal }}Props {}
 
 export const {{ input | pascal }}: React.FC<I{{ input | pascal }}Props> = (): JSX.Element => {
 
-
   return (
-    <Container>
-
-    </Container>
-    )
+    <Container />
+  )
 }
 
 ```
 
 # `{{ input | pascal }}/{{ input | pascal }}.stories.tsx`
 
-```jsx
+```tsx
 import { Meta, Story } from '@storybook/react/types-6-0'
 import React from 'react'
 
@@ -51,5 +44,15 @@ Default.args = {
   
 }
 
+```
+
+# `{{ input | pascal }}/styles.ts`
+
+```ts
+import styled from 'styled-components'
+
+export const Container = styled.div`
+  padding: 10px;
+`
 
 ```
