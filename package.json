@@ -46,6 +46,7 @@
     "test": "craco test",
     "eject": "craco eject",
     "generate": "scaffdog generate",
+    "g": "scaffdog generate",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
