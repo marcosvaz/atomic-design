@@ -16,7 +16,7 @@ export interface I{{ input | pascal }}Props {}
 
 export const {{ input | pascal }}: React.FC<I{{ input | pascal }}Props> = (): JSX.Element => {
   return (
-    <div></div>
+    <div />
   )
 }
 
