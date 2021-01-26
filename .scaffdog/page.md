@@ -14,10 +14,11 @@ import React from 'react'
 
 export interface I{{ input | pascal }}Props {}
 
-export const {{ input | pascal }}: React.FC<I{{ input | pascal }}Props> = (): JSX.Element => {
+const {{ input | pascal }}: React.FC<I{{ input | pascal }}Props> = (): JSX.Element => {
   return (
     <div />
   )
 }
 
+export default {{ input | pascal }};
 ```
